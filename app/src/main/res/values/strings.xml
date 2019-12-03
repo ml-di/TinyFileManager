@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_version">0.0.1 (Developer)</string>
+    <string name="app_name">Tiny File Manager</string>
+
+    <string name="btn_next">Продолжить</string>
+    <string name="permission_subtitle">Для работы приложения требуются разрешения на запись и чтение файлов</string>
+
+    <string name="storage">Хранилища</string>
+    <string name="categories">Категории</string>
+    <string name="internal_storage">Внутренняя память</string>
+    <string name="external_storage">Карта памяти</string>
+    <string name="busy">Занято</string>
+    
+    <string name="category_download">Загрузки</string>
+    <string name="category_image">Изображения</string>
+    <string name="category_video">Видео</string>
+    <string name="category_audio">Аудио</string>
+    <string name="category_document">Документы</string>
+    <string name="category_app">Приложения</string>
+</resources>

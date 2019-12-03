@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#A2B1FB</color>
+    <color name="colorPrimaryDark">#A2B1FB</color>
+    <color name="colorAccent">#000000</color>
+
+    <color name="backgroundColor">#F0F1F6</color>
+    <color name="placeholderColor">#FFFFFF</color>
+
+    <color name="btnTextColor">#BF000000</color>
+    <color name="btnBackgroundColor">#FFFFFF</color>
+
+    <color name="navigationBarColor">#F0F1F6</color>
+    <color name="statusBarColor">#F0F1F6</color>
+    <color name="toolBarColor">#A2B1FB</color>
+
+    <color name="textColor100">#000000</color>
+    <color name="textColor75">#BF000000</color>
+    <color name="textColor50">#80000000</color>
+    <color name="textColor25">#40000000</color>
+
+    <color name="iconDownloadColor">#82B1FF</color>
+    <color name="iconImageColor">#FF9E80</color>
+    <color name="iconVideoColor">#EA80FC</color>
+    <color name="iconAudioColor">#FF80AB</color>
+    <color name="iconDocumentColor">#90A4AE</color>
+    <color name="iconAppColor">#69F0AE</color>
+
+</resources>
