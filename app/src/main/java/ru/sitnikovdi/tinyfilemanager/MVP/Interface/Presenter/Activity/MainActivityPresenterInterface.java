@@ -7,6 +7,7 @@ import ru.sitnikovdi.tinyfilemanager.MVP.MVPPresenter;
 
 public interface MainActivityPresenterInterface extends MVPPresenter<MainActivityViewInterface> {
 
+    void settingsBtnClick ();
     void storageAdapterClick ();
     void categoriesAdapterClick ();
 

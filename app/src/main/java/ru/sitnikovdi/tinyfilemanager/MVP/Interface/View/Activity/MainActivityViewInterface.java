@@ -7,6 +7,7 @@ import ru.sitnikovdi.tinyfilemanager.MVP.MVPView;
 
 public interface MainActivityViewInterface extends MVPView {
 
+    void initSettingsBtn (int resId);
     void initStorageRecyclerView (int resId);
     void initCategoriesRecyclerView (int resId);
 
