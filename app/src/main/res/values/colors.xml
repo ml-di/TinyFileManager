@@ -8,7 +8,9 @@
     <color name="placeholderColor">#FFFFFF</color>
 
     <color name="btnTextColor">#BF000000</color>
+    <color name="btnTextColor2">#000000</color>
     <color name="btnBackgroundColor">#FFFFFF</color>
+    <color name="btnBackgroundColor2">#F0F1F6</color>
 
     <color name="navigationBarColor">#F0F1F6</color>
     <color name="statusBarColor">#F0F1F6</color>
