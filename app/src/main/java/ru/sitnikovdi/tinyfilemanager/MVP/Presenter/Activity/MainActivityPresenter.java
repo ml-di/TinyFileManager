@@ -27,7 +27,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityViewInterfa
     }
 
     @Override
-    public void storageAdapterClick() {
+    public void storageAdapterClick(int type) {
 
     }
 
@@ -49,14 +49,17 @@ public class MainActivityPresenter extends BasePresenter<MainActivityViewInterfa
         final long internalFreeMemory = GetStorageMemory.getFreeSpace(0, getView().getContext());
         final long internalTotalMemory = GetStorageMemory.getTotalSpace(0, getView().getContext());
 
-        String freeMemory = android.text.format.Formatter.formatFileSize(getView().getContext(), internalFreeMemory);
-        String totalmemory = android.text.format.Formatter.formatFileSize(getView().getContext(), internalTotalMemory);
-        /*storageList.add(new RecyclerViewStorageMainData(0, 32000f, GetStorageMemory.getFreeSpace(0, getView().getContext()), R.drawable.ic_settings_24px));
+        storageList.add(new RecyclerViewStorageMainData(0, internalTotalMemory, internalFreeMemory, R.drawable.ic_phone_24px));
 
         // MicroSD карта
         if (GetStorageMemory.isSDCardAvailable(getView().getContext())) {
-            storageList.add(new RecyclerViewStorageMainData(1, 64000f, 42116f, R.drawable.ic_settings_24px));
-        }*/
+            storageList.add(new RecyclerViewStorageMainData(
+                    1,
+                    GetStorageMemory.getTotalSpace(1, getView().getContext()),
+                    GetStorageMemory.getFreeSpace(1, getView().getContext()),
+                    R.drawable.ic_sd_storage_24px)
+            );
+        }
 
         storageList.add(new RecyclerViewImageData(R.drawable.ic_add_24px));
 

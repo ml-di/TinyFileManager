@@ -2,9 +2,12 @@ package ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.os.Parcelable;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -18,6 +21,7 @@ import ru.sitnikovdi.tinyfilemanager.Activity.MainActivityView;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewImageData;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewStorageMainData;
 import ru.sitnikovdi.tinyfilemanager.R;
+import ru.sitnikovdi.tinyfilemanager.Util.ProgressBarAnimation;
 
 public class RecyclerViewStorageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -29,18 +33,40 @@ public class RecyclerViewStorageAdapter extends RecyclerView.Adapter<RecyclerVie
 
     static class MainItemViewHolder extends RecyclerView.ViewHolder {
 
+        private ConstraintLayout item;
         private AppCompatTextView title;
         private AppCompatTextView subTitle;
         private AppCompatImageView icon;
-        private ConstraintLayout progressBar;
+        private ProgressBar progressBar;
 
         MainItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            item = itemView.findViewById(R.id.rv_storage_item);
+            title = itemView.findViewById(R.id.rv_storage_item_title);
+            subTitle = itemView.findViewById(R.id.rv_storage_item_subtitle);
+            icon = itemView.findViewById(R.id.rv_storage_item_icon);
+            progressBar = itemView.findViewById(R.id.rv_storage_item_progressbar);
         }
 
         void setMainContent(RecyclerViewStorageMainData mainData, Context context) {
+            icon.setImageResource(mainData.getIconRes());
 
+            final String memory = Formatter.formatFileSize(context, mainData.getMemory());
+            final String busyMemory = Formatter.formatFileSize(context, mainData.getMemory() - mainData.getFreeMemory());
+            final String titleText = (mainData.getType() == 0)
+                    ? String.format(context.getString(R.string.internal_storage), memory)
+                    : String.format(context.getString(R.string.external_storage), memory);
+
+            final int progress = (int) ((mainData.getMemory() - mainData.getFreeMemory()) / (mainData.getMemory() / 100));
+            final ProgressBarAnimation progressBarAnimation = new ProgressBarAnimation(progressBar, 0, progress);
+            progressBarAnimation.setDuration(1000);
+            progressBarAnimation.setInterpolator(new DecelerateInterpolator());
+            progressBar.setAnimation(progressBarAnimation);
+
+            title.setText(titleText);
+            subTitle.setText(String.format(context.getString(R.string.busy), busyMemory));
+            item.setOnClickListener(v -> ((MainActivityView) context).getPresenter().storageAdapterClick(mainData.getType()));
         }
     }
 

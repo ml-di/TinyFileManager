@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#A2B1FB</color>
     <color name="colorAccent">#000000</color>
 
+    <color name="colorRipple">#F0F1F6</color>
+
     <color name="backgroundColor">#F0F1F6</color>
     <color name="placeholderColor">#FFFFFF</color>
 
@@ -11,6 +13,9 @@
     <color name="btnTextColor2">#000000</color>
     <color name="btnBackgroundColor">#FFFFFF</color>
     <color name="btnBackgroundColor2">#F0F1F6</color>
+
+    <color name="progressBarBackground">#F0F1F6</color>
+    <color name="progressBarForeground">#A2B1FB</color>
 
     <color name="navigationBarColor">#F0F1F6</color>
     <color name="statusBarColor">#F0F1F6</color>

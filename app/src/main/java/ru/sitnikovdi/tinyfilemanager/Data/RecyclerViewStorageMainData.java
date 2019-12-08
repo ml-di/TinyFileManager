@@ -6,13 +6,13 @@ import android.os.Parcelable;
 public class RecyclerViewStorageMainData implements Parcelable {
 
     private final int type;
-    private final float memory;
-    private final float freeMemory;
+    private final long memory;
+    private final long freeMemory;
     private final int iconRes;
 
     public RecyclerViewStorageMainData(final int type,
-                                       final float memory,
-                                       final float freeMemory,
+                                       final long memory,
+                                       final long freeMemory,
                                        final int iconRes) {
         this.type = type;
         this.memory = memory;
@@ -22,8 +22,8 @@ public class RecyclerViewStorageMainData implements Parcelable {
 
     private RecyclerViewStorageMainData(Parcel in) {
         type = in.readInt();
-        memory = in.readFloat();
-        freeMemory = in.readFloat();
+        memory = in.readLong();
+        freeMemory = in.readLong();
         iconRes = in.readInt();
     }
 
@@ -47,18 +47,18 @@ public class RecyclerViewStorageMainData implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(type);
-        parcel.writeFloat(memory);
-        parcel.writeFloat(freeMemory);
+        parcel.writeLong(memory);
+        parcel.writeLong(freeMemory);
         parcel.writeInt(iconRes);
     }
 
     public int getType() {
         return type;
     }
-    public float getMemory() {
+    public long getMemory() {
         return memory;
     }
-    public float getFreeMemory() {
+    public long getFreeMemory() {
         return freeMemory;
     }
     public int getIconRes() {
