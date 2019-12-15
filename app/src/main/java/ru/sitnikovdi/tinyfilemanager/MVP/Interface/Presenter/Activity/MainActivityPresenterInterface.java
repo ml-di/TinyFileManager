@@ -13,7 +13,8 @@ public interface MainActivityPresenterInterface extends MVPPresenter<MainActivit
     void settingsBtnClick();
     void storageAdapterClick(int type);
     void storageAdapterButtonClick();
-    void categoriesAdapterClick();
+    void categoriesAdapterClick(String type);
 
     ArrayList<Parcelable> getStorageArrayList();
+    ArrayList<Parcelable> getCategoriesArrayList();
 }

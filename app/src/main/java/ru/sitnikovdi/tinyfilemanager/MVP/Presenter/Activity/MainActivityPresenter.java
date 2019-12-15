@@ -1,9 +1,11 @@
 package ru.sitnikovdi.tinyfilemanager.MVP.Presenter.Activity;
 
+import android.content.Context;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewCategoriesMainData;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewImageData;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewStorageMainData;
 import ru.sitnikovdi.tinyfilemanager.MVP.BasePresenter;
@@ -19,6 +21,8 @@ public class MainActivityPresenter extends BasePresenter<MainActivityViewInterfa
         getView().initSettingsBtn(R.id.main_btn_settings);
         getView().initStorageRecyclerView(R.id.main_storage_recyclerview);
         getView().initStorageRecyclerViewAdapter();
+        getView().initCategoriesRecyclerView(R.id.main_categories_recyclerview);
+        getView().initCategoriesRecyclerViewAdapter();
     }
 
     @Override
@@ -37,7 +41,7 @@ public class MainActivityPresenter extends BasePresenter<MainActivityViewInterfa
     }
 
     @Override
-    public void categoriesAdapterClick() {
+    public void categoriesAdapterClick(String type) {
 
     }
 
@@ -64,5 +68,20 @@ public class MainActivityPresenter extends BasePresenter<MainActivityViewInterfa
         storageList.add(new RecyclerViewImageData(R.drawable.ic_add_24px));
 
         return storageList;
+    }
+
+    @Override
+    public ArrayList<Parcelable> getCategoriesArrayList() {
+        final ArrayList<Parcelable> categoriesList = new ArrayList<>();
+        final Context context = getView().getContext();
+
+        categoriesList.add(new RecyclerViewCategoriesMainData("DOWNLOAD", context.getString(R.string.category_download), R.drawable.ic_download_24px, R.color.iconDownloadColor));
+        categoriesList.add(new RecyclerViewCategoriesMainData("IMAGE", context.getString(R.string.category_image), R.drawable.ic_image_24px, R.color.iconImageColor));
+        categoriesList.add(new RecyclerViewCategoriesMainData("VIDEO", context.getString(R.string.category_video), R.drawable.ic_video_24px, R.color.iconVideoColor));
+        categoriesList.add(new RecyclerViewCategoriesMainData("AUDIO", context.getString(R.string.category_audio), R.drawable.ic_audio_24px, R.color.iconAudioColor));
+        categoriesList.add(new RecyclerViewCategoriesMainData("DOC", context.getString(R.string.category_document), R.drawable.ic_doc_24px, R.color.iconDocumentColor));
+        categoriesList.add(new RecyclerViewCategoriesMainData("APP", context.getString(R.string.category_app), R.drawable.ic_app_24px, R.color.iconAppColor));
+
+        return categoriesList;
     }
 }

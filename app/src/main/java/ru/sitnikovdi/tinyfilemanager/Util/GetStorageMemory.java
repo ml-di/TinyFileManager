@@ -1,12 +1,7 @@
 package ru.sitnikovdi.tinyfilemanager.Util;
 
 import android.content.Context;
-import android.os.Build;
-import android.os.Environment;
-import android.os.StatFs;
-
 import androidx.core.content.ContextCompat;
-
 import java.io.File;
 
 public class GetStorageMemory {
@@ -25,12 +20,6 @@ public class GetStorageMemory {
 
         final File[] storage = ContextCompat.getExternalFilesDirs(context, null);
         return storage[type].getUsableSpace();
-
-        /*if ((android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)) {
-            return storage[type].getUsableSpace();
-        } else {
-            return storage[type].getUsableSpace();
-        }*/
     }
 
 }

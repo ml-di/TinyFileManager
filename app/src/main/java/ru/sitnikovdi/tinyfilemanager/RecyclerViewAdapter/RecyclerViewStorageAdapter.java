@@ -113,8 +113,8 @@ public class RecyclerViewStorageAdapter extends RecyclerView.Adapter<RecyclerVie
                 break;
 
             case ITEM_BUTTON:
-                final View viewAddButtom = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_layout_main_storage_button_item, parent, false);
-                mViewHolder = new ButtonItemViewHolder(viewAddButtom);
+                final View viewAddButton = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_layout_main_storage_button_item, parent, false);
+                mViewHolder = new ButtonItemViewHolder(viewAddButton);
                 break;
 
             default:
@@ -166,6 +166,4 @@ public class RecyclerViewStorageAdapter extends RecyclerView.Adapter<RecyclerVie
     public long getItemId(int position) {
         return mList.get(position).hashCode();
     }
-
-
 }

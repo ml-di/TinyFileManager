@@ -2,11 +2,9 @@ package ru.sitnikovdi.tinyfilemanager.Activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import ru.sitnikovdi.tinyfilemanager.Util.CheckPermission;
 
 public class StartActivity extends AppCompatActivity {
@@ -14,7 +12,6 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         startFirstActivity();
     }
 
