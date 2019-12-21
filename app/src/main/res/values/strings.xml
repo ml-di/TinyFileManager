@@ -10,7 +10,9 @@
     <string name="internal_storage">Внутренняя память • %1$s</string>
     <string name="external_storage">Карта памяти • %1$s</string>
     <string name="busy">Занято %1$s</string>
-    
+
+    <string name="files">Файлы: %1$d</string>
+
     <string name="category_download">Загрузки</string>
     <string name="category_image">Изображения</string>
     <string name="category_video">Видео</string>

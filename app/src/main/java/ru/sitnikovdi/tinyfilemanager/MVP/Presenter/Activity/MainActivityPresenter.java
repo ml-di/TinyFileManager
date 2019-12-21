@@ -1,10 +1,10 @@
 package ru.sitnikovdi.tinyfilemanager.MVP.Presenter.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
-
 import java.util.ArrayList;
-
+import ru.sitnikovdi.tinyfilemanager.Activity.FilesViewActivityView;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewCategoriesMainData;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewImageData;
 import ru.sitnikovdi.tinyfilemanager.Data.RecyclerViewStorageMainData;
@@ -32,7 +32,9 @@ public class MainActivityPresenter extends BasePresenter<MainActivityViewInterfa
 
     @Override
     public void storageAdapterClick(int type) {
-
+        final Intent filesViewIntent = new Intent(getView().getContext(), FilesViewActivityView.class);
+        filesViewIntent.putExtra("TYPE", type);
+        getView().getContext().startActivity(filesViewIntent);
     }
 
     @Override

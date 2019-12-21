@@ -1,6 +1,5 @@
 package ru.sitnikovdi.tinyfilemanager.MVP.Interface.Presenter.Activity;
 
-import android.content.Context;
 import android.os.Parcelable;
 
 import java.util.ArrayList;

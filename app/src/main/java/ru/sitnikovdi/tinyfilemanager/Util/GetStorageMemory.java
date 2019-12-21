@@ -21,5 +21,4 @@ public class GetStorageMemory {
         final File[] storage = ContextCompat.getExternalFilesDirs(context, null);
         return storage[type].getUsableSpace();
     }
-
 }
