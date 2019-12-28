@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.Presenter.Activity.FilesViewActivityPresenterInterface;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.View.Activity.FilesViewActivityViewInterface;
@@ -61,8 +64,14 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     @Override
     public void initFilesRecyclerViewAdapter() {
-        filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(presenter.getFilesArrayList());
+        filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(presenter.getFilesArrayList(null));
         filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
+    }
+
+    @Override
+    public void updateRecyclerViewAdapter(ArrayList<Parcelable> list) {
+        ((RecyclerViewFilesAdapter) filesRecyclerViewAdapter).setList(list);
+        filesRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override

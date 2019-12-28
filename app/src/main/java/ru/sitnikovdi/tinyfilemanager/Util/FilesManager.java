@@ -10,10 +10,22 @@ import java.util.Arrays;
 
 public class FilesManager {
 
-    public static ArrayList<File> getFileList(Context context, int id) {
-        final File[] storage = ContextCompat.getExternalFilesDirs(context, null);
-        final File[] files = storage[id].getParentFile().getParentFile().getParentFile().getParentFile().listFiles();
-        return new ArrayList<>(Arrays.asList(files));
+    public static ArrayList<File> getFileList(Context context, String path) {
+        return getList(context, -1, path);
     }
 
+    public static ArrayList<File> getFileList(Context context, int id) {
+        return getList(context, id, null);
+    }
+
+    private static ArrayList<File> getList(Context context, int id, String path) {
+        if (id > -1 && path == null) {
+            final File[] storage = ContextCompat.getExternalFilesDirs(context, null);
+            final File[] files = storage[id].getParentFile().getParentFile().getParentFile().getParentFile().listFiles();
+            return new ArrayList<>(Arrays.asList(files));
+        } else if (id == -1 && path != null) {
+            final File files = new File(path);
+            return new ArrayList<>(Arrays.asList(files.listFiles()));
+        } else return null;
+    }
 }

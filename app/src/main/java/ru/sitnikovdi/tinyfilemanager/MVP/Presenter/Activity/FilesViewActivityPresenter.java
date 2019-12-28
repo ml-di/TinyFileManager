@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import ru.sitnikovdi.tinyfilemanager.Data.Files.RecyclerViewFilesFolderData;
+import ru.sitnikovdi.tinyfilemanager.Data.Files.RecyclerViewFilesOtherFileData;
 import ru.sitnikovdi.tinyfilemanager.MVP.BasePresenter;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.Presenter.Activity.FilesViewActivityPresenterInterface;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.View.Activity.FilesViewActivityViewInterface;
@@ -21,17 +22,25 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
     }
 
     @Override
-    public void fileAdapterClick(File file) {
-
+    public void fileAdapterClick(String path) {
+        getView().updateRecyclerViewAdapter(getFilesArrayList(path));
     }
 
     @Override
-    public ArrayList<Parcelable> getFilesArrayList() {
+    public ArrayList<Parcelable> getFilesArrayList(String path) {
         final ArrayList<Parcelable> files = new ArrayList<>();
-        for (File f :FilesManager.getFileList(getView().getContext(), getView().getTypeStorage())) {
+        final ArrayList<File> filesArray =
+                (path == null)
+                        ? FilesManager.getFileList(getView().getContext(), getView().getTypeStorage())
+                        : FilesManager.getFileList(getView().getContext(), path);
+
+        for (File f : filesArray) {
             if (f.isDirectory()) {
-                files.add(new RecyclerViewFilesFolderData(f.getPath(), f.getName(), 0));
+                files.add(new RecyclerViewFilesFolderData(f.getPath(), f.getName(), f.listFiles().length));
+            } else {
+                files.add(new RecyclerViewFilesOtherFileData(f.getPath(), f.getName(), f.lastModified(), f.length()));
             }
+
         }
         return files;
     }

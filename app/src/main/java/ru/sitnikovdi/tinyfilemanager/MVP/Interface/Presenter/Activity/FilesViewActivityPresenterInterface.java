@@ -10,7 +10,7 @@ import ru.sitnikovdi.tinyfilemanager.MVP.MVPPresenter;
 
 public interface FilesViewActivityPresenterInterface extends MVPPresenter<FilesViewActivityViewInterface> {
 
-    void fileAdapterClick(File file);
+    void fileAdapterClick(String path);
 
-    ArrayList<Parcelable> getFilesArrayList();
+    ArrayList<Parcelable> getFilesArrayList(String path);
 }
