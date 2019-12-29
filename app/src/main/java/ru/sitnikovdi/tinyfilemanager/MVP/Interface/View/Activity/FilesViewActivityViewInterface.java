@@ -12,6 +12,12 @@ public interface FilesViewActivityViewInterface extends MVPView {
 
     void initFilesRecyclerView(int resId);
     void initFilesRecyclerViewAdapter();
+    void initAppBarTitle(int resId);
+    void initAppBarSelectAllBtn(int resId);
+    void initAppBarSortBtn(int resId);
+    void initAppBarMenuBtn(int resId);
+
+    void setAppBarTitleText(String str);
 
     int getTypeStorage();
 

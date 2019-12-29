@@ -52,7 +52,7 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
             title.setText(folderData.getTitle());
             subTitle.setText(String.format(context.getString(R.string.files), folderData.getFilesCount()));
 
-            folder.setOnClickListener(v -> ((FilesViewActivityView) context).getPresenter().fileAdapterClick(folderData.getPath()));
+            folder.setOnClickListener(v -> ((FilesViewActivityView) context).getPresenter().fileAdapterClick(folderData.getPath(), folderData.getTitle()));
         }
     }
 

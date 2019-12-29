@@ -19,11 +19,16 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
     public void viewIsReady() {
         getView().initFilesRecyclerView(R.id.files_view_recyclerview);
         getView().initFilesRecyclerViewAdapter();
+        getView().initAppBarTitle(R.id.files_view_appbar_title);
+        getView().initAppBarSelectAllBtn(R.id.files_view_btn_selectAll);
+        getView().initAppBarSortBtn(R.id.files_view_btn_sort);
+        getView().initAppBarMenuBtn(R.id.files_view_btn_menu);
     }
 
     @Override
-    public void fileAdapterClick(String path) {
+    public void fileAdapterClick(String path, String name) {
         getView().updateRecyclerViewAdapter(getFilesArrayList(path));
+        getView().setAppBarTitleText(name);
     }
 
     @Override

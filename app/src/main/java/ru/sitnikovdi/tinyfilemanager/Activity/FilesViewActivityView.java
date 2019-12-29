@@ -1,6 +1,8 @@
 package ru.sitnikovdi.tinyfilemanager.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,10 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     private RecyclerView filesRecyclerView;
     private RecyclerView.Adapter filesRecyclerViewAdapter;
+    private AppCompatTextView appBarTitle;
+    private ConstraintLayout appBarSelectAllBtn;
+    private ConstraintLayout appBarSortBtn;
+    private ConstraintLayout appBarMenuBtn;
 
     private int TYPE_STORAGE = -1;
 
@@ -69,9 +75,39 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
+    public void initAppBarTitle(int resId) {
+        appBarTitle = findViewById(resId);
+    }
+
+    @Override
+    public void initAppBarSelectAllBtn(int resId) {
+        appBarSelectAllBtn = findViewById(resId);
+        appBarSelectAllBtn.setOnClickListener(v -> {});
+    }
+
+    @Override
+    public void initAppBarSortBtn(int resId) {
+        appBarSortBtn = findViewById(resId);
+        appBarSortBtn.setOnClickListener(v -> {});
+    }
+
+    @Override
+    public void initAppBarMenuBtn(int resId) {
+        appBarMenuBtn = findViewById(resId);
+        appBarMenuBtn.setOnClickListener(v -> {});
+    }
+
+    @Override
     public void updateRecyclerViewAdapter(ArrayList<Parcelable> list) {
         ((RecyclerViewFilesAdapter) filesRecyclerViewAdapter).setList(list);
         filesRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setAppBarTitleText(String str) {
+        if (appBarTitle != null) {
+            appBarTitle.setText(str);
+        }
     }
 
     @Override
