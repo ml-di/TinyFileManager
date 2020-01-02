@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_folder_24px"
-        app:tint="@color/colorPrimary" />
+        app:tint="@color/iconFolderColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

@@ -14,11 +14,11 @@
         android:id="@+id/rv_file_otherfile_icon"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:padding="12dp"
+        android:padding="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_file_24px"
-        app:tint="@color/colorPrimary" />
+        app:tint="@color/iconOtherFileColor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

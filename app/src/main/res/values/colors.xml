@@ -33,4 +33,7 @@
     <color name="iconDocumentColor">#90A4AE</color>
     <color name="iconAppColor">#69F0AE</color>
 
+    <color name="iconFolderColor">#A2B1FB</color>
+    <color name="iconOtherFileColor">#80000000</color>
+
 </resources>
