@@ -24,10 +24,7 @@
             android:id="@+id/files_view_collapsingToolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expandedTitleGravity="bottom"
-            app:expandedTitleMarginStart="20dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,7 +37,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="16dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"

@@ -53,6 +53,12 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
             subTitle.setText(String.format(context.getString(R.string.files), folderData.getFilesCount()));
 
             folder.setOnClickListener(v -> ((FilesViewActivityView) context).getPresenter().fileAdapterClick(folderData.getPath(), folderData.getTitle()));
+
+            if (folderData.isHidden()) {
+                folder.setAlpha(0.5f);
+            } else {
+                folder.setAlpha(1f);
+            }
         }
     }
 
@@ -81,6 +87,12 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
             subTitle.setText(fileSize + ", " + fileEditTime);
 
             file.setOnClickListener(v -> {});
+
+            if (otherFile.isHidden()) {
+                file.setAlpha(0.5f);
+            } else {
+                file.setAlpha(1f);
+            }
         }
     }
 

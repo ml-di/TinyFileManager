@@ -8,19 +8,23 @@ public class RecyclerViewFilesFolderData implements Parcelable {
     private final String path;
     private final String title;
     private final int filesCount;
+    private final boolean isHidden;
 
     public RecyclerViewFilesFolderData(final String path,
                                        final String title,
-                                       final int filesCount) {
+                                       final int filesCount,
+                                       final boolean isHidden) {
         this.path = path;
         this.title = title;
         this.filesCount = filesCount;
+        this.isHidden = isHidden;
     }
 
     private RecyclerViewFilesFolderData (Parcel in) {
         path = in.readString();
         title = in.readString();
         filesCount = in.readInt();
+        isHidden = in.readInt() == 1;
     }
 
     public static final Parcelable.Creator<RecyclerViewFilesFolderData> CREATOR = new Parcelable.Creator<RecyclerViewFilesFolderData>() {
@@ -45,6 +49,7 @@ public class RecyclerViewFilesFolderData implements Parcelable {
         parcel.writeString(path);
         parcel.writeString(title);
         parcel.writeInt(filesCount);
+        parcel.writeInt(isHidden ? 1 : 0);
     }
 
     public String getPath() {
@@ -55,5 +60,8 @@ public class RecyclerViewFilesFolderData implements Parcelable {
     }
     public int getFilesCount() {
         return filesCount;
+    }
+    public boolean isHidden() {
+        return isHidden;
     }
 }

@@ -9,15 +9,18 @@ public class RecyclerViewFilesOtherFileData implements Parcelable {
     private final String title;
     private final long editTime;
     private final long size;
+    private final boolean isHidden;
 
     public RecyclerViewFilesOtherFileData(final String path,
                                           final String title,
                                           final long editTime,
-                                          final long size) {
+                                          final long size,
+                                          final boolean isHidden) {
         this.path = path;
         this.title = title;
         this.editTime = editTime;
         this.size = size;
+        this.isHidden = isHidden;
     }
 
     private RecyclerViewFilesOtherFileData(Parcel in) {
@@ -25,6 +28,7 @@ public class RecyclerViewFilesOtherFileData implements Parcelable {
         title = in.readString();
         editTime = in.readLong();
         size = in.readLong();
+        isHidden = in.readInt() == 1;
     }
 
     public static final Parcelable.Creator<RecyclerViewFilesOtherFileData> CREATOR = new Parcelable.Creator<RecyclerViewFilesOtherFileData>() {
@@ -50,6 +54,7 @@ public class RecyclerViewFilesOtherFileData implements Parcelable {
         parcel.writeString(title);
         parcel.writeLong(editTime);
         parcel.writeLong(size);
+        parcel.writeInt(isHidden ? 1 : 0);
     }
 
     public String getPath() {
@@ -63,5 +68,8 @@ public class RecyclerViewFilesOtherFileData implements Parcelable {
     }
     public long getSize() {
         return size;
+    }
+    public boolean isHidden() {
+        return isHidden;
     }
 }
