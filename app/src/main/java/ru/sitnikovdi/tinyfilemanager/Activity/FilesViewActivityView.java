@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+
 import com.google.android.material.appbar.AppBarLayout;
 import java.io.File;
 import java.util.ArrayList;
@@ -120,6 +123,10 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
         if (filesRecyclerView.getLayoutManager() != null) {
             filesRecyclerView.getLayoutManager().scrollToPosition(0);
         }
+
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(filesRecyclerView.getContext(), R.anim.layout_recyclerview_show);
+        filesRecyclerView.setLayoutAnimation(controller);
     }
 
     @Override
