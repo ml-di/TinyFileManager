@@ -21,6 +21,7 @@
     <color name="statusBarColor">#F0F1F6</color>
     <color name="toolBarColor">#A2B1FB</color>
 
+    <color name="textColorInv100">#FFFFFF</color>
     <color name="textColor100">#000000</color>
     <color name="textColor75">#BF000000</color>
     <color name="textColor50">#80000000</color>

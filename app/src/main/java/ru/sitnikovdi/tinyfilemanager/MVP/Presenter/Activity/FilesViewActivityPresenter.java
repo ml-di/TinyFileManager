@@ -3,6 +3,12 @@ package ru.sitnikovdi.tinyfilemanager.MVP.Presenter.Activity;
 import android.os.Parcelable;
 import java.io.File;
 import java.util.ArrayList;
+
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.sitnikovdi.tinyfilemanager.Const.SortListType;
 import ru.sitnikovdi.tinyfilemanager.Data.Files.RecyclerViewFilesFolderData;
 import ru.sitnikovdi.tinyfilemanager.Data.Files.RecyclerViewFilesOtherFileData;
@@ -33,11 +39,33 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
 
     @Override
     public void updateList(String path, String name) {
-        final ArrayList<Parcelable> mList = ListHelper.getSortList(getFilesArrayList(path), SortListType.SORT_NAME);
-        getView().updateRecyclerViewAdapter(mList);
-        getView().setAppBarTitleText(name);
-        getView().setCurrentPath(path);
-        getView().expandAppBar(true, false);
+        new Single<ArrayList<Parcelable>>() {
+            @Override
+            protected void subscribeActual(SingleObserver<? super ArrayList<Parcelable>> observer) {
+                observer.onSuccess(ListHelper.getSortList(getFilesArrayList(path), SortListType.SORT_NAME));
+            }
+        }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(ArrayList<Parcelable> mList) {
+                getView().updateRecyclerViewAdapter(mList);
+                getView().setAppBarTitleText(name);
+                getView().setCurrentPath(path);
+                getView().expandAppBar(true, false);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
     }
 
     @Override

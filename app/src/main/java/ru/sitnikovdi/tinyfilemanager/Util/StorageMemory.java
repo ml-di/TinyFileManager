@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 import java.io.File;
 
-public class GetStorageMemory {
+public class StorageMemory {
 
     public static boolean isSDCardAvailable(Context context) {
         final File[] storage = ContextCompat.getExternalFilesDirs(context, null);

@@ -21,6 +21,7 @@ import ru.sitnikovdi.tinyfilemanager.Activity.FilesViewActivityView;
 import ru.sitnikovdi.tinyfilemanager.Data.Files.RecyclerViewFilesFolderData;
 import ru.sitnikovdi.tinyfilemanager.Data.Files.RecyclerViewFilesOtherFileData;
 import ru.sitnikovdi.tinyfilemanager.R;
+import ru.sitnikovdi.tinyfilemanager.Util.FileNameHelper;
 
 public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -67,6 +68,7 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
         private ConstraintLayout file;
         private AppCompatTextView title;
         private AppCompatTextView subTitle;
+        private AppCompatTextView ext;
 
         OtherFileViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +76,7 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
             file = itemView.findViewById(R.id.rv_file_otherfile);
             title = itemView.findViewById(R.id.rv_file_otherfile_title);
             subTitle = itemView.findViewById(R.id.rv_file_otherfile_subtitle);
+            ext = itemView.findViewById(R.id.rv_file_otherfile_icon_ext);
         }
 
         void setOtherFile(RecyclerViewFilesOtherFileData otherFile, Context context) {
@@ -83,8 +86,9 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
             final String fileEditTime = sdf.format(otherFile.getEditTime());
             final String fileSize = Formatter.formatFileSize(context, otherFile.getSize());
 
-            title.setText(otherFile.getTitle());
+            title.setText(FileNameHelper.getName(otherFile.getPath()));
             subTitle.setText(fileSize + ", " + fileEditTime);
+            ext.setText(FileNameHelper.getExt(otherFile.getPath()));
 
             file.setOnClickListener(v -> {});
 

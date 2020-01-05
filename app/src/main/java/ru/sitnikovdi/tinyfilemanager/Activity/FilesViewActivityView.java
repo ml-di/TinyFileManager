@@ -14,12 +14,19 @@ import android.view.animation.LayoutAnimationController;
 import com.google.android.material.appbar.AppBarLayout;
 import java.io.File;
 import java.util.ArrayList;
+
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.sitnikovdi.tinyfilemanager.Const.SortListType;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.Presenter.Activity.FilesViewActivityPresenterInterface;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.View.Activity.FilesViewActivityViewInterface;
 import ru.sitnikovdi.tinyfilemanager.MVP.Presenter.Activity.FilesViewActivityPresenter;
 import ru.sitnikovdi.tinyfilemanager.R;
 import ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter.RecyclerViewFilesAdapter;
+import ru.sitnikovdi.tinyfilemanager.Util.FileNameHelper;
 import ru.sitnikovdi.tinyfilemanager.Util.FilesManager;
 import ru.sitnikovdi.tinyfilemanager.Util.LightStatusBar;
 import ru.sitnikovdi.tinyfilemanager.Util.ListHelper;
@@ -77,9 +84,33 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     @Override
     public void initFilesRecyclerViewAdapter() {
-        final ArrayList<Parcelable> mList = ListHelper.getSortList(presenter.getFilesArrayList(null), SortListType.SORT_NAME);
-        filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(mList);
-        filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
+        new Single<ArrayList<Parcelable>>() {
+            @Override
+            protected void subscribeActual(SingleObserver<? super ArrayList<Parcelable>> observer) {
+                observer.onSuccess(ListHelper.getSortList(getPresenter().getFilesArrayList(null), SortListType.SORT_NAME));
+            }
+        }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(ArrayList<Parcelable> mList) {
+                final String path = FilesManager.getPathStorage(getContext(), getTypeStorage());
+                setAppBarTitleText(FileNameHelper.getName(path));
+                filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(mList);
+                filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
     }
 
     @Override
