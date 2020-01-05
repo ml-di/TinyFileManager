@@ -18,6 +18,7 @@ public interface FilesViewActivityViewInterface extends MVPView {
 
     void expandAppBar(boolean isExpand, boolean isAnimation);
     void updateRecyclerViewAdapter(ArrayList<Parcelable> list);
+    void clearRecyclerViewAdapter();
 
     void setAppBarTitleText(String str);
     void setCurrentPath(String path);

@@ -53,6 +53,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             TYPE_STORAGE = getIntent().getExtras().getInt("TYPE");
+            currentPath = FilesManager.getPathStorage(this, TYPE_STORAGE);
         }
 
         LightStatusBar.setLight(true, true, this, false);
@@ -100,8 +101,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
             @Override
             public void onSuccess(ArrayList<Parcelable> mList) {
-                final String path = FilesManager.getPathStorage(getContext(), getTypeStorage());
-                setAppBarTitleText(FileNameHelper.getName(path));
+                setAppBarTitleText(FileNameHelper.getName(currentPath));
                 filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(mList);
                 filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
             }
@@ -161,6 +161,12 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
+    public void clearRecyclerViewAdapter() {
+        ((RecyclerViewFilesAdapter) filesRecyclerViewAdapter).clearList();
+        filesRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setAppBarTitleText(String str) {
         if (appBarTitle != null) {
             appBarTitle.setText(str);
@@ -189,7 +195,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     @Override
     public void onBackPressed() {
-        if (currentPath.equals(FilesManager.getPathStorage(this, TYPE_STORAGE))) {
+        if (currentPath == null || currentPath.equals(FilesManager.getPathStorage(this, TYPE_STORAGE))) {
             super.onBackPressed();
         } else {
             final File currentFile = new File(currentPath);

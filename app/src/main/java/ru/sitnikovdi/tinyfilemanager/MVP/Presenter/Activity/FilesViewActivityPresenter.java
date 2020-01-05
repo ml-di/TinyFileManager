@@ -50,7 +50,7 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
         .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                getView().clearRecyclerViewAdapter();
             }
 
             @Override

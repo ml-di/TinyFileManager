@@ -174,4 +174,8 @@ public class RecyclerViewFilesAdapter extends RecyclerView.Adapter<RecyclerView.
     public void setList(ArrayList<Parcelable> mList) {
         this.mList = mList;
     }
+
+    public void clearList() {
+        this.mList.clear();
+    }
 }
