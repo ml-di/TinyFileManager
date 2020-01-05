@@ -23,13 +23,14 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
 
     @Override
     public void viewIsReady() {
-        getView().initFilesRecyclerView(R.id.files_view_recyclerview);
-        getView().initFilesRecyclerViewAdapter();
+        getView().initProgressBar(R.id.files_view_progressbar);
         getView().initAppBar(R.id.files_view_appbar);
         getView().initAppBarTitle(R.id.files_view_appbar_title);
         getView().initAppBarSelectAllBtn(R.id.files_view_btn_selectAll);
         getView().initAppBarSortBtn(R.id.files_view_btn_sort);
         getView().initAppBarMenuBtn(R.id.files_view_btn_menu);
+        getView().initFilesRecyclerView(R.id.files_view_recyclerview);
+        getView().initFilesRecyclerViewAdapter();
     }
 
     @Override
@@ -50,11 +51,14 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
         .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
             @Override
             public void onSubscribe(Disposable d) {
-                getView().clearRecyclerViewAdapter();
+                getView().hideRecyclerView();
+                getView().showProgressBar();
             }
 
             @Override
             public void onSuccess(ArrayList<Parcelable> mList) {
+                getView().hideProgressBar();
+                getView().showRecyclerView();
                 getView().updateRecyclerViewAdapter(mList);
                 getView().setAppBarTitleText(name);
                 getView().setCurrentPath(path);
@@ -63,7 +67,8 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
 
             @Override
             public void onError(Throwable e) {
-
+                getView().hideProgressBar();
+                getView().showRecyclerView();
             }
         });
     }

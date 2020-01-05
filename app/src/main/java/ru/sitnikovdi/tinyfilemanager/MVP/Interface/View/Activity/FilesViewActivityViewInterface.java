@@ -15,10 +15,16 @@ public interface FilesViewActivityViewInterface extends MVPView {
     void initAppBarSelectAllBtn(int resId);
     void initAppBarSortBtn(int resId);
     void initAppBarMenuBtn(int resId);
+    void initProgressBar(int resId);
 
     void expandAppBar(boolean isExpand, boolean isAnimation);
     void updateRecyclerViewAdapter(ArrayList<Parcelable> list);
     void clearRecyclerViewAdapter();
+
+    void showRecyclerView();
+    void hideRecyclerView();
+    void showProgressBar();
+    void hideProgressBar();
 
     void setAppBarTitleText(String str);
     void setCurrentPath(String path);

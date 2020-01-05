@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ProgressBar;
 
 import com.google.android.material.appbar.AppBarLayout;
 import java.io.File;
@@ -42,6 +44,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     private ConstraintLayout appBarSelectAllBtn;
     private ConstraintLayout appBarSortBtn;
     private ConstraintLayout appBarMenuBtn;
+    private ProgressBar progressBar;
 
     private int TYPE_STORAGE = -1;
     private String currentPath = null;
@@ -96,11 +99,14 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
         .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                showProgressBar();
+                hideRecyclerView();
             }
 
             @Override
             public void onSuccess(ArrayList<Parcelable> mList) {
+                hideProgressBar();
+                showRecyclerView();
                 setAppBarTitleText(FileNameHelper.getName(currentPath));
                 filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(mList);
                 filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
@@ -108,7 +114,8 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
             @Override
             public void onError(Throwable e) {
-
+                hideProgressBar();
+                showRecyclerView();
             }
         });
     }
@@ -142,6 +149,11 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
+    public void initProgressBar(int resId) {
+        progressBar = findViewById(resId);
+    }
+
+    @Override
     public void expandAppBar(boolean isExpand, boolean isAnimation) {
         appBar.setExpanded(isExpand, isAnimation);
     }
@@ -164,6 +176,26 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     public void clearRecyclerViewAdapter() {
         ((RecyclerViewFilesAdapter) filesRecyclerViewAdapter).clearList();
         filesRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showRecyclerView() {
+        filesRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideRecyclerView() {
+        filesRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
