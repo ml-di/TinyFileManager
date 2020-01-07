@@ -30,7 +30,11 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
         getView().initAppBarSortBtn(R.id.files_view_btn_sort);
         getView().initAppBarMenuBtn(R.id.files_view_btn_menu);
         getView().initFilesRecyclerView(R.id.files_view_recyclerview);
+        getView().initFilesPathRecyclerView(R.id.files_view_file_path);
+        getView().initCollapsingToolbarLayout(R.id.files_view_collapsingToolBar);
+
         getView().initFilesRecyclerViewAdapter();
+        getView().initFilesPathRecyclerViewAdapter();
     }
 
     @Override
@@ -62,6 +66,8 @@ public class FilesViewActivityPresenter extends BasePresenter<FilesViewActivityV
                 getView().updateRecyclerViewAdapter(mList);
                 getView().setAppBarTitleText(name);
                 getView().setCurrentPath(path);
+                getView().updatePathItems(path);
+                getView().resetScrollFlag();
                 getView().expandAppBar(true, false);
             }
 

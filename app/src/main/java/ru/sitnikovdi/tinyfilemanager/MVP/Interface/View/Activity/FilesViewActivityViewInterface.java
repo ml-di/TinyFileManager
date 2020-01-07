@@ -9,13 +9,17 @@ import ru.sitnikovdi.tinyfilemanager.MVP.MVPView;
 public interface FilesViewActivityViewInterface extends MVPView {
 
     void initFilesRecyclerView(int resId);
-    void initFilesRecyclerViewAdapter();
+    void initFilesPathRecyclerView(int resId);
     void initAppBar(int resId);
     void initAppBarTitle(int resId);
     void initAppBarSelectAllBtn(int resId);
     void initAppBarSortBtn(int resId);
     void initAppBarMenuBtn(int resId);
     void initProgressBar(int resId);
+    void initCollapsingToolbarLayout(int resId);
+
+    void initFilesRecyclerViewAdapter();
+    void initFilesPathRecyclerViewAdapter();
 
     void expandAppBar(boolean isExpand, boolean isAnimation);
     void updateRecyclerViewAdapter(ArrayList<Parcelable> list);
@@ -25,6 +29,9 @@ public interface FilesViewActivityViewInterface extends MVPView {
     void hideRecyclerView();
     void showProgressBar();
     void hideProgressBar();
+
+    void updatePathItems(String path);
+    void resetScrollFlag();
 
     void setAppBarTitleText(String str);
     void setCurrentPath(String path);

@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -14,8 +15,11 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ProgressBar;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -28,6 +32,7 @@ import ru.sitnikovdi.tinyfilemanager.MVP.Interface.View.Activity.FilesViewActivi
 import ru.sitnikovdi.tinyfilemanager.MVP.Presenter.Activity.FilesViewActivityPresenter;
 import ru.sitnikovdi.tinyfilemanager.R;
 import ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter.RecyclerViewFilesAdapter;
+import ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter.RecyclerViewFilesPathAdapter;
 import ru.sitnikovdi.tinyfilemanager.Util.FileNameHelper;
 import ru.sitnikovdi.tinyfilemanager.Util.FilesManager;
 import ru.sitnikovdi.tinyfilemanager.Util.LightStatusBar;
@@ -39,15 +44,20 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     private AppBarLayout appBar;
     private RecyclerView filesRecyclerView;
+    private RecyclerView filesPathRecyclerView;
     private RecyclerView.Adapter filesRecyclerViewAdapter;
+    private RecyclerView.Adapter filesPathRecyclerViewAdapter;
     private AppCompatTextView appBarTitle;
     private ConstraintLayout appBarSelectAllBtn;
     private ConstraintLayout appBarSortBtn;
     private ConstraintLayout appBarMenuBtn;
     private ProgressBar progressBar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     private int TYPE_STORAGE = -1;
     private String currentPath = null;
+    private String rootPath;
+    private List<String> pathList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
         if (getIntent() != null && getIntent().getExtras() != null) {
             TYPE_STORAGE = getIntent().getExtras().getInt("TYPE");
             currentPath = FilesManager.getPathStorage(this, TYPE_STORAGE);
+            rootPath = currentPath;
         }
 
         LightStatusBar.setLight(true, true, this, false);
@@ -87,37 +98,10 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
-    public void initFilesRecyclerViewAdapter() {
-        new Single<ArrayList<Parcelable>>() {
-            @Override
-            protected void subscribeActual(SingleObserver<? super ArrayList<Parcelable>> observer) {
-                observer.onSuccess(ListHelper.getSortList(getPresenter().getFilesArrayList(null), SortListType.SORT_NAME));
-            }
-        }
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                showProgressBar();
-                hideRecyclerView();
-            }
-
-            @Override
-            public void onSuccess(ArrayList<Parcelable> mList) {
-                hideProgressBar();
-                showRecyclerView();
-                setAppBarTitleText(FileNameHelper.getName(currentPath));
-                filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(mList);
-                filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                hideProgressBar();
-                showRecyclerView();
-            }
-        });
+    public void initFilesPathRecyclerView(int resId) {
+        filesPathRecyclerView = findViewById(resId);
+        filesPathRecyclerView.setHasFixedSize(false);
+        filesPathRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     @Override
@@ -151,6 +135,52 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     @Override
     public void initProgressBar(int resId) {
         progressBar = findViewById(resId);
+    }
+
+    @Override
+    public void initCollapsingToolbarLayout(int resId) {
+        collapsingToolbarLayout = findViewById(resId);
+    }
+
+    @Override
+    public void initFilesRecyclerViewAdapter() {
+        new Single<ArrayList<Parcelable>>() {
+            @Override
+            protected void subscribeActual(SingleObserver<? super ArrayList<Parcelable>> observer) {
+                observer.onSuccess(ListHelper.getSortList(getPresenter().getFilesArrayList(null), SortListType.SORT_NAME));
+            }
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<ArrayList<Parcelable>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        showProgressBar();
+                        hideRecyclerView();
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Parcelable> mList) {
+                        hideProgressBar();
+                        showRecyclerView();
+                        setAppBarTitleText(FileNameHelper.getName(currentPath));
+                        filesRecyclerViewAdapter = new RecyclerViewFilesAdapter(mList);
+                        filesRecyclerView.setAdapter(filesRecyclerViewAdapter);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgressBar();
+                        showRecyclerView();
+                    }
+                });
+    }
+
+    @Override
+    public void initFilesPathRecyclerViewAdapter() {
+        pathList = new ArrayList<>();
+        filesPathRecyclerViewAdapter = new RecyclerViewFilesPathAdapter(pathList);
+        filesPathRecyclerView.setAdapter(filesPathRecyclerViewAdapter);
     }
 
     @Override
@@ -199,6 +229,41 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
+    public void updatePathItems(String path) {
+        pathList.clear();
+        if (!path.equals(rootPath)) {
+            File tempPath = new File(path);
+            while (!tempPath.getPath().equals(rootPath)) {
+                pathList.add(0, tempPath.getParentFile().getPath());
+                tempPath = tempPath.getParentFile();
+            }
+        }
+        ((RecyclerViewFilesPathAdapter) filesPathRecyclerViewAdapter).setList(pathList);
+        filesPathRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void resetScrollFlag() {
+
+        final AppBarLayout.LayoutParams params =
+                (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
+
+        if(filesPathRecyclerViewAdapter.getItemCount() > 0) {
+            params.setScrollFlags(
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL |
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED |
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+            );
+        } else {
+            params.setScrollFlags(
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL |
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED |
+                    AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP
+            );
+        }
+    }
+
+    @Override
     public void setAppBarTitleText(String str) {
         if (appBarTitle != null) {
             appBarTitle.setText(str);
@@ -227,7 +292,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     @Override
     public void onBackPressed() {
-        if (currentPath == null || currentPath.equals(FilesManager.getPathStorage(this, TYPE_STORAGE))) {
+        if (currentPath == null || currentPath.equals(rootPath)) {
             super.onBackPressed();
         } else {
             final File currentFile = new File(currentPath);
