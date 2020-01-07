@@ -8,11 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
 import java.util.List;
 
 import ru.sitnikovdi.tinyfilemanager.Activity.FilesViewActivityView;
 import ru.sitnikovdi.tinyfilemanager.R;
-import ru.sitnikovdi.tinyfilemanager.Util.FileNameHelper;
 
 public class RecyclerViewFilesPathAdapter extends RecyclerView.Adapter<RecyclerViewFilesPathAdapter.RecyclerViewFilesPathViewHolder> {
 
@@ -52,7 +53,7 @@ public class RecyclerViewFilesPathAdapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewFilesPathViewHolder holder, int position) {
-        final String name = FileNameHelper.getName(mList.get(position));
+        final String name = new File(mList.get(position)).getName();
         holder.title.setText(name);
         holder.btn.setOnClickListener(v -> ((FilesViewActivityView) mContext).getPresenter().fileAdapterClick(mList.get(position), name));
     }
