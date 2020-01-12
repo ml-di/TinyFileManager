@@ -27,12 +27,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.sitnikovdi.tinyfilemanager.Const.SortListType;
+import ru.sitnikovdi.tinyfilemanager.Data.PathNavigation.RecyclerViewPathNavigationDividerData;
+import ru.sitnikovdi.tinyfilemanager.Data.PathNavigation.RecyclerViewPathNavigationIconData;
+import ru.sitnikovdi.tinyfilemanager.Data.PathNavigation.RecyclerViewPathNavigationTitleData;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.Presenter.Activity.FilesViewActivityPresenterInterface;
 import ru.sitnikovdi.tinyfilemanager.MVP.Interface.View.Activity.FilesViewActivityViewInterface;
 import ru.sitnikovdi.tinyfilemanager.MVP.Presenter.Activity.FilesViewActivityPresenter;
 import ru.sitnikovdi.tinyfilemanager.R;
 import ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter.RecyclerViewFilesAdapter;
-import ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter.RecyclerViewFilesPathAdapter;
+import ru.sitnikovdi.tinyfilemanager.RecyclerViewAdapter.RecyclerViewPathNavigationAdapter;
 import ru.sitnikovdi.tinyfilemanager.Util.FileNameHelper;
 import ru.sitnikovdi.tinyfilemanager.Util.FilesManager;
 import ru.sitnikovdi.tinyfilemanager.Util.LightStatusBar;
@@ -44,9 +47,9 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
 
     private AppBarLayout appBar;
     private RecyclerView filesRecyclerView;
-    private RecyclerView filesPathRecyclerView;
+    private RecyclerView pathNavigationRecyclerView;
     private RecyclerView.Adapter filesRecyclerViewAdapter;
-    private RecyclerView.Adapter filesPathRecyclerViewAdapter;
+    private RecyclerView.Adapter pathNavigationRecyclerViewAdapter;
     private AppCompatTextView appBarTitle;
     private ConstraintLayout appBarSelectAllBtn;
     private ConstraintLayout appBarSortBtn;
@@ -57,12 +60,12 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     private int TYPE_STORAGE = -1;
     private String currentPath = null;
     private String rootPath;
-    private List<String> pathList;
+    private List<Parcelable> pathList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_files_view_view);
+        setContentView(R.layout.activity_files_view);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             TYPE_STORAGE = getIntent().getExtras().getInt("TYPE");
@@ -98,10 +101,10 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
-    public void initFilesPathRecyclerView(int resId) {
-        filesPathRecyclerView = findViewById(resId);
-        filesPathRecyclerView.setHasFixedSize(false);
-        filesPathRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    public void initPathNavigationRecyclerView(int resId) {
+        pathNavigationRecyclerView = findViewById(resId);
+        pathNavigationRecyclerView.setHasFixedSize(false);
+        pathNavigationRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     @Override
@@ -177,10 +180,10 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
-    public void initFilesPathRecyclerViewAdapter() {
+    public void initPathNavigationRecyclerViewAdapter() {
         pathList = new ArrayList<>();
-        filesPathRecyclerViewAdapter = new RecyclerViewFilesPathAdapter(pathList);
-        filesPathRecyclerView.setAdapter(filesPathRecyclerViewAdapter);
+        pathNavigationRecyclerViewAdapter = new RecyclerViewPathNavigationAdapter(pathList);
+        pathNavigationRecyclerView.setAdapter(pathNavigationRecyclerViewAdapter);
     }
 
     @Override
@@ -229,17 +232,26 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     }
 
     @Override
-    public void updatePathItems(String path) {
+    public void updatePathNavigationItems(String path) {
         pathList.clear();
         if (!path.equals(rootPath)) {
             File tempPath = new File(path);
+            pathList.add(0, new RecyclerViewPathNavigationTitleData(tempPath.getPath()));
             while (!tempPath.getPath().equals(rootPath)) {
-                pathList.add(0, tempPath.getParentFile().getPath());
+                pathList.add(0, new RecyclerViewPathNavigationDividerData(R.drawable.ic_arrow_right_24px));
+
+                if (!tempPath.getParentFile().getPath().equals(rootPath)) {
+                    pathList.add(0, new RecyclerViewPathNavigationTitleData(tempPath.getParentFile().getPath()));
+                } else {
+                    pathList.add(0, new RecyclerViewPathNavigationIconData(R.drawable.ic_home_24px, tempPath.getParentFile().getPath()));
+                }
+
                 tempPath = tempPath.getParentFile();
             }
         }
-        ((RecyclerViewFilesPathAdapter) filesPathRecyclerViewAdapter).setList(pathList);
-        filesPathRecyclerViewAdapter.notifyDataSetChanged();
+        ((RecyclerViewPathNavigationAdapter) pathNavigationRecyclerViewAdapter).setList(pathList);
+        pathNavigationRecyclerViewAdapter.notifyDataSetChanged();
+        pathNavigationRecyclerView.scrollToPosition(pathNavigationRecyclerViewAdapter.getItemCount() - 1);
     }
 
     @Override
@@ -248,7 +260,7 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
         final AppBarLayout.LayoutParams params =
                 (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
 
-        if(filesPathRecyclerViewAdapter.getItemCount() > 0) {
+        if(pathNavigationRecyclerViewAdapter.getItemCount() > 0) {
             params.setScrollFlags(
                     AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL |
                     AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED |
@@ -278,6 +290,11 @@ public class FilesViewActivityView extends AppCompatActivity implements FilesVie
     @Override
     public int getTypeStorage() {
         return this.TYPE_STORAGE;
+    }
+
+    @Override
+    public String getCurrentPath() {
+        return currentPath;
     }
 
     @Override

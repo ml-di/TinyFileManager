@@ -31,8 +31,8 @@
             android:id="@+id/files_view_collapsingToolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            android:minHeight="44dp">
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
+            android:minHeight="52dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -158,8 +158,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:clipToPadding="false"
                     app:layout_constraintTop_toBottomOf="@+id/files_view_appbar_title"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
